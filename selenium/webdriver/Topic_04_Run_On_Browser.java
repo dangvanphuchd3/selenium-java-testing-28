@@ -4,6 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -17,29 +19,43 @@ public class Topic_04_Run_On_Browser {
 
 	@BeforeClass
 	public void beforeClass() {
-		if (osName.contains("Mac OS")) {
-			System.setProperty("webdriver.gecko.driver", projectPath + "/browserDrivers/geckodriver");
-		} else {
-			System.setProperty("webdriver.gecko.driver", projectPath + "\\browserDrivers\\geckodriver.exe");
-		}
+		//Chrome
+		System.setProperty("webdriver.chrome.driver", projectPath + "\\browserDrivers\\chromedriver.exe");
+		driver = new ChromeDriver();
 		
+		//Firefox
+		System.setProperty("webdriver.gecko.driver", projectPath + "\\browserDrivers\\geckodriver.exe");
 		driver = new FirefoxDriver();
+		
+		//Edge
+		System.setProperty("webdriver.edge.driver", projectPath + "\\browserDrivers\\msedgedriver.exe");
+		driver = new EdgeDriver();
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		
 	}
 
 	@Test
-	public void TC_01_() {
+	public void TC_01_Run_Chrome() {
+		if (osName.contains("Windows")) {
+			System.setProperty("webdriver.chrome.driver", projectPath + "\\browserDrivers\\chromedriver.exe");
+		} else {
+			System.setProperty("webdriver.chrome.driver", projectPath + "/browserDrivers/chromedriver");
+		}
+		
+		driver = new ChromeDriver();
+		
+		driver.get("https://qa.team/");
+		
+		driver.quit();
+	}
+
+	@Test
+	public void TC_02_Run_Firefox() {
 		
 	}
 
 	@Test
-	public void TC_02_() {
-		
-	}
-
-	@Test
-	public void TC_03_() {
+	public void TC_03_Run_Edge() {
 		
 	}
 
