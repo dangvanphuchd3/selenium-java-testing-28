@@ -42,6 +42,15 @@ public class Topic_00_Template {
 	public void TC_03_() {
 		
 	}
+	
+	public void sleepInSecond(long timeInSecond) {
+		try {
+			Thread.sleep(timeInSecond * 1000);
+			// 1000 ms = 1s
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@AfterClass
 	public void afterClass() {
