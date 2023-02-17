@@ -18,6 +18,7 @@ public class Topic_08_Default_Dropdown {
 	String projectPath = System.getProperty("user.dir");
 	String osName = System.getProperty("os.name");
 	String firstName, lastName, emailAddress, companyName, password, day, month, year;
+	String country, state, city, address, postalCode, phoneNumber;
 
 	@BeforeClass
 	public void beforeClass() {
@@ -38,6 +39,12 @@ public class Topic_08_Default_Dropdown {
 		day = "20";
 		month = "September";
 		year = "1977";
+		country = "United States";
+		state = "Arizona";
+		city = "Phoenix";
+		address = "1624 Coplin Avenue";
+		postalCode = "85032";
+		phoneNumber = "602-485-7005";
 		
 	}
 
@@ -115,7 +122,50 @@ public class Topic_08_Default_Dropdown {
 
 	@Test
 	public void TC_02_Add_Address() {
-
+		driver.findElement(By.xpath("//li[@class='customer-addresses inactive']/a")).click();
+		driver.findElement(By.cssSelector("button.add-address-button")).click();
+		
+		driver.findElement(By.id("Address_FirstName")).sendKeys(firstName);
+		driver.findElement(By.id("Address_LastName")).sendKeys(lastName);
+		driver.findElement(By.id("Address_Email")).sendKeys(emailAddress);
+		driver.findElement(By.id("Address_Company")).sendKeys(companyName);
+		
+		new Select(driver.findElement(By.id("Address_CountryId"))).selectByVisibleText(country);
+		new Select(driver.findElement(By.id("Address_StateProvinceId"))).selectByVisibleText(state);
+		
+		driver.findElement(By.id("Address_City")).sendKeys(city);
+		driver.findElement(By.id("Address_Address1")).sendKeys(address);
+		driver.findElement(By.id("Address_ZipPostalCode")).sendKeys(postalCode);
+		driver.findElement(By.id("Address_PhoneNumber")).sendKeys(phoneNumber);
+		
+		driver.findElement(By.cssSelector("button.save-address-button")).click();
+		
+		// Verify message added successfully
+		Assert.assertEquals(driver.findElement(By.cssSelector("p.content")).getText(), "The new address has been added successfully.");
+		
+		// Verify name = firstName + lastName
+		Assert.assertEquals(driver.findElement(By.cssSelector("li.name")).getText(), firstName + " " + lastName);
+		
+		// Verify emailAddress
+		Assert.assertTrue(driver.findElement(By.cssSelector("li.email")).getText().contains(emailAddress));
+		
+		// Verify phoneNumber
+		Assert.assertTrue(driver.findElement(By.cssSelector("li.phone")).getText().contains(phoneNumber));
+		
+		// Verify company
+		Assert.assertEquals(driver.findElement(By.cssSelector("li.company")).getText(), companyName);
+		
+		// Verify Address
+		Assert.assertEquals(driver.findElement(By.cssSelector("li.address1")).getText(), address);
+		
+		// Verify city, state, zip
+		Assert.assertTrue(driver.findElement(By.cssSelector("li.city-state-zip")).getText().contains(city));
+		Assert.assertTrue(driver.findElement(By.cssSelector("li.city-state-zip")).getText().contains(state));
+		Assert.assertTrue(driver.findElement(By.cssSelector("li.city-state-zip")).getText().contains(postalCode));
+		
+		// Verify country
+		Assert.assertEquals(driver.findElement(By.cssSelector("li.country")).getText(), country);
+		
 	}
 	
 	public int getRandomNumber() {
