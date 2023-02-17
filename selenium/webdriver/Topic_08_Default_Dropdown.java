@@ -90,6 +90,26 @@ public class Topic_08_Default_Dropdown {
 		driver.findElement(By.id("register-button")).click();
 		
 		Assert.assertEquals(driver.findElement(By.cssSelector("div.result")).getText(), "Your registration completed");
+		
+		driver.findElement(By.cssSelector("a.ico-login")).click();
+		sleepInSecond(2);
+		
+		driver.findElement(By.id("Email")).sendKeys(emailAddress);
+		driver.findElement(By.id("Password")).sendKeys(password);
+		driver.findElement(By.cssSelector("button.login-button")).click();
+		
+		driver.findElement(By.className("ico-account")).click();
+		
+		Assert.assertEquals(driver.findElement(By.id("FirstName")).getAttribute("value"), firstName);
+		Assert.assertEquals(driver.findElement(By.id("LastName")).getAttribute("value"), lastName);
+		
+		Assert.assertEquals(new Select(driver.findElement(By.name("DateOfBirthDay"))).getFirstSelectedOption().getText(), day);
+		Assert.assertEquals(new Select(driver.findElement(By.name("DateOfBirthMonth"))).getFirstSelectedOption().getText(), month);
+		Assert.assertEquals(new Select(driver.findElement(By.name("DateOfBirthYear"))).getFirstSelectedOption().getText(), year);
+		
+		Assert.assertEquals(driver.findElement(By.id("Email")).getAttribute("value"), emailAddress);
+		Assert.assertEquals(driver.findElement(By.id("Company")).getAttribute("value"), companyName);
+		
 
 	}
 
