@@ -17,7 +17,7 @@ public class Topic_08_Default_Dropdown {
 	Select select;
 	String projectPath = System.getProperty("user.dir");
 	String osName = System.getProperty("os.name");
-	String firstName, lastName, emailAddress, companyName, password;
+	String firstName, lastName, emailAddress, companyName, password, day, month, year;
 
 	@BeforeClass
 	public void beforeClass() {
@@ -35,6 +35,9 @@ public class Topic_08_Default_Dropdown {
 		emailAddress = "elonmusk" + getRandomNumber() + "@gmail.com";
 		companyName = "SpaceX";
 		password = "123456789";
+		day = "20";
+		month = "September";
+		year = "1977";
 		
 	}
 
@@ -47,19 +50,36 @@ public class Topic_08_Default_Dropdown {
 		driver.findElement(By.id("FirstName")).sendKeys(firstName);
 		driver.findElement(By.id("LastName")).sendKeys(lastName);
 		
+		/* Cách 1:
 		select = new Select(driver.findElement(By.name("DateOfBirthDay")));
+		select.selectByVisibleText("18");
+		*/
+		
+		// Cách 2:
+		// Ngắn gọn, khuyến khích dùng
+		new Select(driver.findElement(By.name("DateOfBirthDay"))).selectByVisibleText(day);
+		new Select(driver.findElement(By.name("DateOfBirthMonth"))).selectByVisibleText(month);
+		new Select(driver.findElement(By.name("DateOfBirthYear"))).selectByVisibleText(year);
 		
 		/*
 		// Chọn ngày 7
 		select.selectByIndex(7);
 		====================================================================
-		
+		- Sẽ không dùng được nếu item trong dropdown bị thay đổi (thêm/sửa/xóa)
+		- Nếu dùng index thì có nhớ được nó là item nào thực tế nếu testcase fail và cần manual test lại
 		
 		// Chọn ngày 14
 		select.selectByValue("14");
+		====================================================================
+		- Thuộc tính không bắt buộc của item (có/ không có value)
+		- Giá trị thuộc tính khó nhớ
 		
 		// Chọn ngày 18
 		select.selectByVisibleText("18");
+		====================================================================
+		- Vẫn dùng được nếu item trong dropdown bị thay đổi (thêm/ sửa/ xóa)
+		- TC fail và cần manual test lại rất dễ
+		- Text bắt buộc phải có
 		
 		*/
 		
@@ -67,6 +87,9 @@ public class Topic_08_Default_Dropdown {
 		driver.findElement(By.id("Company")).sendKeys(companyName);
 		driver.findElement(By.id("Password")).sendKeys(password);
 		driver.findElement(By.id("ConfirmPassword")).sendKeys(password);
+		driver.findElement(By.id("register-button")).click();
+		
+		Assert.assertEquals(driver.findElement(By.cssSelector("div.result")).getText(), "Your registration completed");
 
 	}
 
@@ -91,6 +114,6 @@ public class Topic_08_Default_Dropdown {
 
 	@AfterClass
 	public void afterClass() {
-		driver.quit();
+		//driver.quit();
 	}
 }
