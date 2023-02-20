@@ -35,7 +35,7 @@ public class Topic_09_Custom_Dropdown {
 	}
 
 	@Test
-	public void TC_01_() {
+	public void TC_01_JQuery() {
 		driver.get("http://jqueryui.com/resources/demos/selectmenu/default.html");
 		
 		// 1 - Click vào 1 thẻ bất kỳ để làm sao cho nó xổ ra hết các item của dropdown
