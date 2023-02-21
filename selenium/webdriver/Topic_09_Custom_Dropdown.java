@@ -92,4 +92,36 @@ public class Topic_09_Custom_Dropdown {
 	public void afterClass() {
 		//driver.quit();
 	}
+	
+	// Tránh lặp lại code nhiều lần chỉ cần gọi hàm ra để dùng
+	// Đi kèm với tham số
+	// Nếu truyền cứng 1 giá trị vào trong hàm = vô nghĩa
+	// Nên define để dùng đi dùng lại nhiều lần
+	public void selectItemInDropdown(String parentCss, String allItemCss) {
+		// 1 - Click vào 1 thẻ bất kỳ để làm sao cho nó xổ ra hết các item của dropdown
+		driver.findElement(By.cssSelector("span#speed-button")).click();
+		
+		// 2 - Chờ cho tất cả các item được load ra thành công
+		// Lấy Locator đại diện cho tất cả các items
+		// Lấy đến thẻ chứa text
+		explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("ul#speed-menu div[role='option']")));
+		
+		// Đưa hết item trong dropdown vào 1 List
+		List<WebElement> speedDropdownItems  = driver.findElements(By.cssSelector("ul#speed-menu div[role='option']"));
+		
+		// 3 - Tìm item xem đúng cái đang cần hay không (dùng vòng lặp duyệt qua)
+		for (WebElement tempItem : speedDropdownItems) {
+			String itemText = tempItem.getText();
+			System.out.println(itemText);
+			
+			// 4 - Kiểm tra text của item đúng với cái mình mong muốn
+			if (itemText.equals("Medium")) {
+				// 5 - Click vào item đó
+				tempItem.click();
+				
+				// Thoát ra khỏi vòng lặp không xét cho các case còn lại nữa
+				break;
+			}
+		}
+	}
 }
