@@ -38,6 +38,17 @@ public class Topic_09_Custom_Dropdown {
 	public void TC_01_JQuery() {
 		driver.get("http://jqueryui.com/resources/demos/selectmenu/default.html");
 		
+		// Muốn chọn item cho Speed dropdown
+		selectItemInDropdown("span#speed-button", "ul#speed-menu div[role='option']", "Slower");
+		sleepInSecond(3);
+		
+		selectItemInDropdown("span#speed-button", "ul#speed-menu div[role='option']", "Fast");
+		sleepInSecond(3);
+		
+		selectItemInDropdown("span#speed-button", "ul#speed-menu div[role='option']", "Slow");
+		sleepInSecond(3);
+		
+		/* CHỌN LẦN ĐÂU TIÊN */
 		// 1 - Click vào 1 thẻ bất kỳ để làm sao cho nó xổ ra hết các item của dropdown
 		driver.findElement(By.cssSelector("span#speed-button")).click();
 		
@@ -97,17 +108,17 @@ public class Topic_09_Custom_Dropdown {
 	// Đi kèm với tham số
 	// Nếu truyền cứng 1 giá trị vào trong hàm = vô nghĩa
 	// Nên define để dùng đi dùng lại nhiều lần
-	public void selectItemInDropdown(String parentCss, String allItemCss) {
+	public void selectItemInDropdown(String parentCss, String allItemCss, String expectedTextItem) {
 		// 1 - Click vào 1 thẻ bất kỳ để làm sao cho nó xổ ra hết các item của dropdown
-		driver.findElement(By.cssSelector("span#speed-button")).click();
+		driver.findElement(By.cssSelector(parentCss)).click();
 		
 		// 2 - Chờ cho tất cả các item được load ra thành công
 		// Lấy Locator đại diện cho tất cả các items
 		// Lấy đến thẻ chứa text
-		explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("ul#speed-menu div[role='option']")));
+		explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(allItemCss)));
 		
 		// Đưa hết item trong dropdown vào 1 List
-		List<WebElement> speedDropdownItems  = driver.findElements(By.cssSelector("ul#speed-menu div[role='option']"));
+		List<WebElement> speedDropdownItems  = driver.findElements(By.cssSelector(allItemCss));
 		
 		// 3 - Tìm item xem đúng cái đang cần hay không (dùng vòng lặp duyệt qua)
 		for (WebElement tempItem : speedDropdownItems) {
@@ -115,7 +126,7 @@ public class Topic_09_Custom_Dropdown {
 			System.out.println(itemText);
 			
 			// 4 - Kiểm tra text của item đúng với cái mình mong muốn
-			if (itemText.equals("Medium")) {
+			if (itemText.equals(expectedTextItem)) {
 				// 5 - Click vào item đó
 				tempItem.click();
 				
