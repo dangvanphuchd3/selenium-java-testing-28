@@ -34,7 +34,7 @@ public class Topic_09_Custom_Dropdown {
 		
 	}
 
-	@Test
+	//@Test
 	public void TC_01_JQuery() {
 		driver.get("http://jqueryui.com/resources/demos/selectmenu/default.html");
 		
@@ -62,7 +62,7 @@ public class Topic_09_Custom_Dropdown {
 		
 		// 3 - Tìm item xem đúng cái đang cần hay không (dùng vòng lặp duyệt qua)
 		for (WebElement tempItem : speedDropdownItems) {
-			String itemText = tempItem.getText();
+			String itemText = tempItem.getText().trim();
 			System.out.println(itemText);
 			
 			// 4 - Kiểm tra text của item đúng với cái mình mong muốn
@@ -81,13 +81,31 @@ public class Topic_09_Custom_Dropdown {
 	}
 
 	@Test
-	public void TC_02_() {
+	public void TC_02_ReactJS() {
+		driver.get("https://react.semantic-ui.com/maximize/dropdown-example-selection/");
 		
+		selectItemInDropdown("div[role='listbox']", "div[role='option'] span", "Elliot Fu");
+		sleepInSecond(3);
+		Assert.assertEquals(driver.findElement(By.cssSelector("div[role='alert']")).getText(), "Elliot Fu");
 	}
 
 	@Test
-	public void TC_03_() {
+	public void TC_03_VeuJS() {
+		driver.get("https://mikerodham.github.io/vue-dropdowns/");
 		
+		selectItemInDropdown("li.dropdown-toggle", "ul.dropdown-menu a", "Third Option");
+		sleepInSecond(3);
+		Assert.assertEquals(driver.findElement(By.cssSelector("li.dropdown-toggle")).getText().trim(), "Third Option");
+	}
+	
+	@Test
+	public void TC_04_Editable() {
+		driver.get("https://react.semantic-ui.com/maximize/dropdown-example-search-selection/");
+		
+		enterAndSelectItemInDropdown("input.search", "div[role='listbox'] span", "Angola");
+		sleepInSecond(3);
+		
+		Assert.assertEquals(driver.findElement(By.cssSelector("div[role='alert']")).getText().trim(), "Angola");
 	}
 	
 	public void sleepInSecond(long timeInSecond) {
@@ -127,6 +145,35 @@ public class Topic_09_Custom_Dropdown {
 			
 			// 4 - Kiểm tra text của item đúng với cái mình mong muốn
 			if (itemText.equals(expectedTextItem)) {
+				// 5 - Click vào item đó
+				tempItem.click();
+				
+				// Thoát ra khỏi vòng lặp không xét cho các case còn lại nữa
+				break;
+			}
+		}
+	}
+	
+	public void enterAndSelectItemInDropdown (String textboxCss, String allItemCss, String expectedTextItem) {
+		// 1 - Nhập expected text item vào - xổ ra các item matching
+		driver.findElement(By.cssSelector(textboxCss)).sendKeys(expectedTextItem);
+		sleepInSecond(1);
+		
+		// 2 - Chờ cho tất cả các item được load ra thành công
+		// Lấy Locator đại diện cho tất cả các items
+		// Lấy đến thẻ chứa text
+		explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(allItemCss)));
+		
+		// Đưa hết item trong dropdown vào 1 List
+		List<WebElement> speedDropdownItems  = driver.findElements(By.cssSelector(allItemCss));
+		
+		// 3 - Tìm item xem đúng cái đang cần hay không (dùng vòng lặp duyệt qua)
+		for (WebElement tempItem : speedDropdownItems) {
+			String itemText = tempItem.getText().trim();
+			System.out.println(itemText);
+			// 4 - Kiểm tra text của item đúng với cái mình mong muốn
+			if (itemText.equals(expectedTextItem)) {
+				sleepInSecond(1);
 				// 5 - Click vào item đó
 				tempItem.click();
 				
