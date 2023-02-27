@@ -42,7 +42,7 @@ public class Topic_02_Selenium_Locator {
 		//Thao tác lên element thì đầu tiên phải tìm được element đó: findElement
 		//Find theo cái gì: id/ class/ name/ css/ xpath/...
 		//Find tìm thấy element rồi thì action lên element đó: click/ sendkey/...
-		driver.findElement(By.id("FirstName")).sendKeys("Automation");;
+		driver.findElement(By.id("FirstName")).sendKeys("Automation");
 	}
 
 	@Test
