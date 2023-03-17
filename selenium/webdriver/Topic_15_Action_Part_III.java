@@ -1,5 +1,11 @@
 package webdriver;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -20,6 +26,7 @@ public class Topic_15_Action_Part_III {
 	JavascriptExecutor jsExcutor;
 	String projectPath = System.getProperty("user.dir");
 	String osName = System.getProperty("os.name");
+	String dragDropHelperPath = projectPath + "\\dragAndDrop\\drag_and_drop_helper.js";
 
 	@BeforeClass
 	public void beforeClass() {
@@ -93,8 +100,47 @@ public class Topic_15_Action_Part_III {
 		Assert.assertEquals(Color.fromString(bigCircleBackGroundColor).asHex().toUpperCase(), "#03A9F4");
 	}
 	
-	public void TC_04_Drag_And_Drop_HTML5() {
+	@Test
+	public void TC_04_Drag_And_Drop_HTML5() throws IOException {
+		String jsHelper = getContentFile(dragDropHelperPath);
 		
+		driver.get("https://automationfc.github.io/drag-drop-html5/");
+		
+		String sourceCss = "div#column-a";
+		String targetCss = "div#column-b";
+		
+		jsHelper = jsHelper + "$(\"" + sourceCss + "\").simulateDragDrop({ dropTarget: \"" + targetCss + "\"});";
+		
+		// Drag A to B
+		jsExcutor.executeScript(jsHelper);
+		sleepInSecond(3);
+		
+		Assert.assertTrue(driver.findElement(By.xpath("//div[@id='column-a']/header[text()='B']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//div[@id='column-b']/header[text()='A']")).isDisplayed());
+		
+		// Drag B to A
+		jsExcutor.executeScript(jsHelper);
+		sleepInSecond(3);
+		
+		Assert.assertTrue(driver.findElement(By.xpath("//div[@id='column-a']/header[text()='A']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//div[@id='column-b']/header[text()='B']")).isDisplayed());
+	}
+	
+	public String getContentFile(String filePath) throws IOException {
+		Charset cs = Charset.forName("UTF-8");
+		FileInputStream stream = new FileInputStream(filePath);
+		try {
+			Reader reader = new BufferedReader(new InputStreamReader(stream, cs));
+			StringBuilder builder = new StringBuilder();
+			char[] buffer = new char[8192];
+			int read;
+			while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
+				builder.append(buffer, 0, read);
+			}
+			return builder.toString();
+		} finally {
+			stream.close();
+		}
 	}
 	
 	public void sleepInSecond(long timeInSecond) {
