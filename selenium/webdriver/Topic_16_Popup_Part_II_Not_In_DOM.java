@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -40,7 +41,7 @@ public class Topic_16_Popup_Part_II_Not_In_DOM {
 		
 	}
 
-	@Test
+	//@Test
 	public void TC_01_Fixed_Not_In_DOM_Tiki() {
 		driver.get("https://tiki.vn/");
 		
@@ -77,8 +78,34 @@ public class Topic_16_Popup_Part_II_Not_In_DOM {
 	}
 
 	@Test
-	public void TC_02_() {
+	public void TC_02_Fixed_Not_In_DOM_Facebook() {
+		driver.get("https://www.facebook.com/");
 		
+		By createAccountPopup = By.xpath("//div[text()='Sign Up']/parent::div/parent::div");
+		
+		//Verify Create Account Popup is not display
+		Assert.assertEquals(driver.findElements(createAccountPopup).size(), 0);
+		
+		driver.findElement(By.cssSelector("a[data-testid='open-registration-form-button']")).click();
+		sleepInSecond(2);
+		
+		// Verify Create Account is displayed
+		Assert.assertEquals(driver.findElements(createAccountPopup).size(), 1);
+		
+		driver.findElement(By.name("firstname")).sendKeys("Automation");
+		driver.findElement(By.name("lastname")).sendKeys("FC");
+		driver.findElement(By.name("reg_email__")).sendKeys("12345678");
+		driver.findElement(By.name("reg_passwd__")).sendKeys("12345678");
+		new Select(driver.findElement(By.id("day"))).selectByVisibleText("21");
+		new Select(driver.findElement(By.id("month"))).selectByVisibleText("Nov");
+		new Select(driver.findElement(By.id("year"))).selectByVisibleText("1998");
+		
+		driver.findElement(By.xpath("//label[text()='Male']/following-sibling::input")).click();
+		
+		driver.findElement(By.xpath("//div[text()='Sign Up']/parent::div/preceding-sibling::img")).click();
+		sleepInSecond(2);
+		
+		Assert.assertEquals(driver.findElements(createAccountPopup).size(), 0);
 	}
 
 	@Test
