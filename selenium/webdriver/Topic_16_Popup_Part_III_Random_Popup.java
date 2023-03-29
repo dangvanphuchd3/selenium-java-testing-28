@@ -33,7 +33,7 @@ public class Topic_16_Popup_Part_III_Random_Popup {
 		
 	}
 
-	@Test
+	//@Test
 	public void TC_01_Popup_Random_In_DOM_1() {
 		driver.get("https://www.javacodegeeks.com/");
 		sleepInSecond(30);
@@ -46,10 +46,11 @@ public class Topic_16_Popup_Part_III_Random_Popup {
 			driver.findElement(By.cssSelector("div.lepopup-input>input")).sendKeys(emailAddress);
 			sleepInSecond(3);
 			driver.findElement(By.cssSelector("a[data-label='Get the Books'],[data-label='OK']>span")).click();
-			sleepInSecond(3);
+			sleepInSecond(5);
 			
 			// Verify
 			Assert.assertEquals(driver.findElement(By.cssSelector("div.lepopup-element-html-content>h4")).getText(), "Thank you!");
+			System.out.println(driver.findElement(By.cssSelector("div.lepopup-element-html-content>h4")).getText());
 			
 			Assert.assertTrue(driver.findElement(By.cssSelector("div.lepopup-element-html-content>p")).getText().contains("Your sign-up request was successful."));
 			sleepInSecond(10);
@@ -65,8 +66,22 @@ public class Topic_16_Popup_Part_III_Random_Popup {
 	}
 
 	@Test
-	public void TC_02_() {
+	public void TC_02_Popup_Random_In_DOM_2() {
+		driver.get("https://vnk.edu.vn/");
+		sleepInSecond(50);
 		
+		By popup = By.cssSelector("div#tve-p-scroller");
+		
+		if (driver.findElement(popup).isDisplayed()) {
+			// Close popup
+			driver.findElement(By.cssSelector("svg.tcb-icon")).click();
+			sleepInSecond(3);
+		}
+		
+		driver.findElement(By.xpath("//button[text()='Danh sách khóa học']")).click();
+		sleepInSecond(3);
+		
+		Assert.assertEquals(driver.getTitle(), "Lịch khai giảng các khóa học tại VNK EDU | VNK EDU");
 	}
 
 	@Test
