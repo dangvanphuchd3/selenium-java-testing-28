@@ -28,12 +28,13 @@ public class Topic_16_Popup_Part_III_Random_Popup {
 		
 		driver = new FirefoxDriver();
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
 		
 		emailAddress = "automationFC" + "@gmail.com";
 		
 	}
 
-	//@Test
+	@Test
 	public void TC_01_Popup_Random_In_DOM_1() {
 		driver.get("https://www.javacodegeeks.com/");
 		sleepInSecond(30);
@@ -85,8 +86,32 @@ public class Topic_16_Popup_Part_III_Random_Popup {
 	}
 
 	@Test
-	public void TC_03_() {
+	public void TC_03_Popup_Random_Not_In_DOM_3() {
+		driver.get("https://dehieu.vn/");
+		sleepInSecond(10);
 		
+		By popup = By.cssSelector("div.popup-content");
+		
+		if (driver.findElements(popup).size() > 0 && driver.findElements(popup).get(0).isDisplayed()) {
+			driver.findElement(By.id("popup-name")).sendKeys("Elon Musk");
+			driver.findElement(By.id("popup-email")).sendKeys(emailAddress);
+			driver.findElement(By.id("popup-phone")).sendKeys("0398737194");
+			sleepInSecond(3);
+			
+			driver.findElement(By.id("close-popup")).click();
+			sleepInSecond(3);
+		}
+		
+		driver.findElement(By.xpath("//a[text()='Tất cả khóa học']")).click();
+		sleepInSecond(3);
+		
+		String courseName = "Khóa học thiết kế hệ thống Cơ điện Công trình";
+		
+		driver.findElement(By.id("search-courses")).sendKeys(courseName);
+		driver.findElement(By.id("search-course-button")).click();
+		sleepInSecond(3);
+		
+		Assert.assertEquals(driver.findElement(By.cssSelector("div.course-content>h4")).getText(), courseName);
 	}
 	
 	public void sleepInSecond(long timeInSecond) {
