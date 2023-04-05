@@ -93,8 +93,27 @@ public class Topic_17_Frame_Iframe {
 	}
 
 	@Test
-	public void TC_02_() {
+	public void TC_02_Frame() {
+		// Step 01: Truy cập vào trang web
+		driver.get("https://netbanking.hdfcbank.com/netbanking/");
 		
+		// Switch to Frame Login page
+		driver.switchTo().frame("login_page");
+		
+		// Step 02: Input vào Customer ID và click Continue
+		// Input vào Customer ID
+		driver.findElement(By.xpath("//div[text()='Customer ID/ User ID']/following-sibling::div/input")).sendKeys("automationFC");
+		
+		// Click Continue
+		driver.findElement(By.cssSelector("a.login-btn")).click();
+		sleepInSecond(3);
+		
+		// Switch to main page
+		driver.switchTo().defaultContent();
+		
+		// Step 03: Verify Passord textbox hiển thị
+		Assert.assertTrue(driver.findElement(By.cssSelector("input#keyboard")).isDisplayed());
+		driver.findElement(By.cssSelector("input#keyboard")).sendKeys("Luvina@123");
 	}
 
 	@Test
