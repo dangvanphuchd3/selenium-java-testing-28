@@ -115,11 +115,6 @@ public class Topic_17_Frame_Iframe {
 		Assert.assertTrue(driver.findElement(By.cssSelector("input#keyboard")).isDisplayed());
 		driver.findElement(By.cssSelector("input#keyboard")).sendKeys("Luvina@123");
 	}
-
-	@Test
-	public void TC_03_() {
-		
-	}
 	
 	public void sleepInSecond(long timeInSecond) {
 		try {
