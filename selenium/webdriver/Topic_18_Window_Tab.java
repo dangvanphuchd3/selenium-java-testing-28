@@ -4,9 +4,12 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JScrollBar;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -26,6 +29,7 @@ public class Topic_18_Window_Tab {
 		}
 		
 		driver = new FirefoxDriver();
+		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		
 	}
@@ -132,6 +136,36 @@ public class Topic_18_Window_Tab {
 		// Kiểm tra Url của page
 		Assert.assertEquals(driver.getCurrentUrl(), "https://www.youtube.com/user/kynavn");
 		
+		// Switch to page Kyna
+		switchToWindowByPageTitle("Kyna.vn - Học online cùng chuyên gia");
+		sleepInSecond(2);
+		
+		
+		// Click vào fanpage Facebook
+		driver.switchTo().frame(driver.findElement(By.xpath("//iframe[contains(@src,'kyna.vn')]")));
+		sleepInSecond(2);
+		
+		driver.findElement(By.cssSelector("a[title='Kyna.vn']")).click();
+		sleepInSecond(2);
+		
+		driver.switchTo().defaultContent();
+		sleepInSecond(2);
+		
+		// Switch to Page Facebook
+		// Lấy ra tất cả các ID của pages
+		Set<String> allWindowIDs = driver.getWindowHandles();
+		
+		for (String id : allWindowIDs) {
+			// Switch từng ID trước
+			driver.switchTo().window(id);
+			
+			// Lấy ra title của page
+			String actualTitle = driver.getCurrentUrl();
+			if (actualTitle.equals("https://www.facebook.com/kyna.vn/")) {
+				break;
+			}
+		}	
+		Assert.assertEquals(driver.getCurrentUrl(), "https://www.facebook.com/kyna.vn/");
 	}
 
 	@Test
