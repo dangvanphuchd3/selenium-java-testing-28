@@ -1,5 +1,7 @@
 package webdriver;
 
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -28,8 +30,8 @@ public class Topic_18_Window_Tab {
 		
 	}
 
-	@Test
-	public void TC_01_Exercise_01() {
+	//@Test
+	public void TC_01_ID() {
 		// Step 01: Truy cập vào trang parent page
 		driver.get("https://automationfc.github.io/basic-form/index.html");
 		
@@ -38,17 +40,133 @@ public class Topic_18_Window_Tab {
 		System.out.println("Parent Page = " + parentPageWindowID);
 		
 		// Step 02: Click link "GOOGLE" -> Switch qua page mới
-		// Click vào link "GOOGLE"
+		// Click vào link "GOOGLE" để bật ra 1 tab mới
+		driver.findElement(By.xpath("//a[text()='GOOGLE']")).click();
+		sleepInSecond(2);
+		
+		/* // Lấy ra tất cả các ID của pages
+		Set<String> allWindowIDs = driver.getWindowHandles();
+		
+		// Dùng vòng lặp duyệt và kiểm tra
+		for (String id : allWindowIDs) {
+			if (!id.equals(parentPageWindowID)) {
+				driver.switchTo().window(id);
+				sleepInSecond(2);
+			}
+		} */
+		switchToWindowByPageTitle("Google");
+		Assert.assertEquals(driver.getTitle(), "Google");
+		
+		// Step 04: Switch về parent window
+		driver.switchTo().window(parentPageWindowID);
+		
+		// Step 05: Click "FACEBOOK" link -> Switch qua tab mới
+		driver.findElement(By.xpath("//a[text()='FACEBOOK']")).click();
+		sleepInSecond(2);
+		
+		switchToWindowByPageTitle("Facebook – log in or sign up");
+		
+		// Step 06: Kiểm tra title của Window mới
+		Assert.assertEquals(driver.getTitle(), "Facebook – log in or sign up");
+		
+		// Step 07: Switch về parent window
+		driver.switchTo().window(parentPageWindowID);
+		
+		// Step 08: Click "TIKI" link -> Switch qua tab mới
+		driver.findElement(By.xpath("//a[text()='TIKI']")).click();
+		sleepInSecond(2);
+		
+		switchToWindowByPageTitle("Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh");
+		
+		// Step 09: Kiểm tra title của window mới
+		Assert.assertEquals(driver.getTitle(), "Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh");
+		
+		// Step 10: Close tất cả cửa sổ/tab ngoại trừ parent window
+		// Lấy ra tất cả ID của các tab
+		Set<String> allWindowIDs = driver.getWindowHandles();
+		
+		// Dùng vòng lặp duyệt và kiểm tra
+		for (String id : allWindowIDs) {
+			// Switch to tab window
+			driver.switchTo().window(id);
+			sleepInSecond(2);
+			
+			if(!id.equals(parentPageWindowID)) {
+				driver.close();
+			}
+		}
+		
+		driver.switchTo().window(parentPageWindowID);
+		
+		Assert.assertEquals(driver.getCurrentUrl(), "https://automationfc.github.io/basic-form/index.html");
 	}
 
 	@Test
-	public void TC_02_() {
+	public void TC_02_Exercise_02() {
+		// Step 01: Truy cập trang
+		driver.get("https://skills.kynaenglish.vn/");
+		sleepInSecond(5);
+		
+		// Click vào img Facebook ở footer
+		driver.findElement(By.xpath("//img[@alt='facebook']")).click();
+		
+		// Switch to page Facebook
+		switchToWindowByPageTitle("Kyna.vn - Home | Facebook");
+		sleepInSecond(2);
+		
+		// Kiểm tra Url
+		Assert.assertEquals(driver.getCurrentUrl(), "https://www.facebook.com/kyna.vn");
+		
+		// Switch to page Kyna
+		switchToWindowByPageTitle("Kyna.vn - Học online cùng chuyên gia");
+		sleepInSecond(2);
+		
+		// Click vào img Youtube ở footer
+		driver.findElement(By.xpath("//img[@alt='youtube']")).click();
+		sleepInSecond(3);
+		
+		// Switch to page Youtube
+		switchToWindowByPageTitle("Kyna.vn - YouTube");
+		sleepInSecond(2);
+		
+		// Kiểm tra Url của page
+		Assert.assertEquals(driver.getCurrentUrl(), "https://www.youtube.com/user/kynavn");
 		
 	}
 
 	@Test
 	public void TC_03_() {
 		
+	}
+	// Dùng được duy nhất cho 2 ID Window/Tab
+	public void switchToWindowByID (String otherID) {
+		// Lấy ra tất cả các ID của pages
+		Set<String> allWindowIDs = driver.getWindowHandles();
+		
+		// Dùng vòng lặp duyệt và kiểm tra
+		for (String id : allWindowIDs) {
+			if (!id.equals(otherID)) {
+				driver.switchTo().window(id);
+				sleepInSecond(2);
+			}
+		}
+	}
+	
+	// Dùng được cho nhiều hơn 2 ID Wind
+	public void switchToWindowByPageTitle(String expectedPageTitle) {
+		// Lấy ra tất cả các ID của pages
+		Set<String> allWindowIDs = driver.getWindowHandles();
+		
+		for (String id : allWindowIDs) {
+			// Switch từng ID trước
+			driver.switchTo().window(id);
+			
+			// Lấy ra title của page
+			String actualTitle = driver.getTitle();
+			if (actualTitle.equals(expectedPageTitle)) {
+				break;
+			}
+		}
 	}
 	
 	public void sleepInSecond(long timeInSecond) {

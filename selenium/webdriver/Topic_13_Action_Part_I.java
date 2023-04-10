@@ -32,7 +32,7 @@ public class Topic_13_Action_Part_I {
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		
 	}
-
+    @Test
 	public void TC_01_Tooltip() {
 		driver.get("https://automationfc.github.io/jquery-tooltip/");
 		
@@ -57,7 +57,7 @@ public class Topic_13_Action_Part_I {
 		
 	}
 
-	@Test
+	//@Test
 	public void TC_03_Fahasa() {
 		driver.get("https://www.fahasa.com/");
 		sleepInSecond(10);
