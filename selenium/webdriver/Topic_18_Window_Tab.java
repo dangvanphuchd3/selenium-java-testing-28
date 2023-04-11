@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JScrollBar;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -19,6 +20,7 @@ public class Topic_18_Window_Tab {
 	WebDriver driver;
 	String projectPath = System.getProperty("user.dir");
 	String osName = System.getProperty("os.name");
+	
 
 	@BeforeClass
 	public void beforeClass() {
@@ -105,7 +107,7 @@ public class Topic_18_Window_Tab {
 		Assert.assertEquals(driver.getCurrentUrl(), "https://automationfc.github.io/basic-form/index.html");
 	}
 
-	@Test
+	//@Test
 	public void TC_02_Exercise_02() {
 		// Step 01: Truy cập trang
 		driver.get("https://skills.kynaenglish.vn/");
@@ -166,6 +168,52 @@ public class Topic_18_Window_Tab {
 			}
 		}	
 		Assert.assertEquals(driver.getCurrentUrl(), "https://www.facebook.com/kyna.vn/");
+		
+		// Switch to page Kyna
+		switchToWindowByPageTitle("Kyna.vn - Học online cùng chuyên gia");
+		sleepInSecond(2);
+		
+		driver.findElement(By.xpath("//img[contains(@src, 'dathongbao.png')]")).click();
+		sleepInSecond(3);
+		
+		switchToWindowByPageTitle("Thông tin website thương mại điện tử - Online.Gov.VN");
+		Assert.assertEquals(driver.getCurrentUrl(), "http://online.gov.vn/Home/WebDetails/61473");
+		
+		// Switch to page Kyna
+		switchToWindowByPageTitle("Kyna.vn - Học online cùng chuyên gia");
+		sleepInSecond(2);
+		
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+		
+		driver.findElement(By.xpath("//img[contains(@src, 'logoCCDV.png')]")).click();
+		sleepInSecond(2);
+		
+		switchToWindowByPageTitle("Thông tin website thương mại điện tử - Online.Gov.VN");
+		Assert.assertEquals(driver.getCurrentUrl(), "http://online.gov.vn/Home/WebDetails/60140");
+		
+		// Step 05: Quay lại parent tab và đóng tất cả các tab còn lại
+		// Lấy ra tất cả các ID của pages
+		allWindowIDs = driver.getWindowHandles();
+		
+		for (String id : allWindowIDs) {
+			// Switch từng ID trước
+			driver.switchTo().window(id);
+			
+			// Lấy ra title của page
+			String actualTitle = driver.getTitle();
+			
+			// Chạy câu lệnh điều kiện
+			if (!actualTitle.equals("Kyna.vn - Học online cùng chuyên gia")) {
+				driver.close();
+				sleepInSecond(2);
+			}
+		}
+		// Switch to page Kyna
+		switchToWindowByPageTitle("Kyna.vn - Học online cùng chuyên gia");
+		sleepInSecond(2);
+		
+		Assert.assertEquals(driver.getCurrentUrl(), "https://skills.kynaenglish.vn/");
 	}
 
 	@Test
