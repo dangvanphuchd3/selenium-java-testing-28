@@ -1,5 +1,6 @@
 package webdriver;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -34,7 +35,70 @@ public class Topic_19_Javascript_Executor {
 
 	@Test
 	public void TC_01_Tech_Panda() {
+		// Step 01: Truy cập vào trang
 		navigateToUrlByJS("http://live.techpanda.org/");
+		sleepInSecond(5);
+		
+		// Step 02: Sử dụng JE để get domain của page
+		// Verify domain = live.techpanda.org
+		Assert.assertEquals(getDomainName(), "live.techpanda.org");
+		
+		// Step 03: Sử dụng JE để get URL của page
+		Assert.assertEquals(executeForBrowser("return document.URL;"), "http://live.techpanda.org/");
+		
+		// Step 04: Open MOBILE page (Sử dụng JE)
+		// Highlight vào text
+		hightlightElement("//a[text()='Mobile']");
+		
+		// Click vào text Mobile
+		clickToElementByJS("//a[text()='Mobile']");
+		sleepInSecond(3);
+		
+		// Step 05: Add sản phẩm SAMSUNG GALAXY vào Cart (Click vào button ADD TO CART bằng JE)
+		// Highlight button ADD TO CART
+		hightlightElement("//a[text()='Samsung Galaxy']/parent::h2/following-sibling::div[@class='actions']/button");
+		
+		// Click button ADD TO CART
+		clickToElementByJS("//a[text()='Samsung Galaxy']/parent::h2/following-sibling::div[@class='actions']/button");
+		sleepInSecond(5);
+		
+		// Step 06: Verify message được hiển thị: Samsung Galaxy was added to your shopping cart. (Sử dụng JE - Get inner text)
+		Assert.assertTrue(getInnerText().contains("Samsung Galaxy was added to your shopping cart."));
+		
+		// Step 07: Open Customer Service page (Sử dụng JE)
+		// Verify title của page = Customer Service (Sử dụng JE)
+		// Highlight link Customer Service
+		hightlightElement("//a[text()='Customer Service']");
+		
+		// Click link Customer Service
+		clickToElementByJS("//a[text()='Customer Service']");
+		sleepInSecond(5);
+		
+		// Verify title của page
+		Assert.assertEquals(getTitlePage(), "Customer Service");
+		
+		// Step 08: Scroll tới element Newsletter textbox nằm ở cuối page (Sử dụng JE)
+		scrollToElementOnDown("//input[@id='newsletter']");
+		hightlightElement("//input[@id='newsletter']");
+		
+		// Step 09: Input Email hợp lên vào Newsletter textbox (Sử dụng JE)
+		sendkeyToElementByJS("//input[@id='newsletter']", "automationfc" + getRandomNumber() + "@gmail.com");
+		
+		// Step 10: Click vào Subcribe button (Sử dụng JE)
+		hightlightElement("//button[@title='Subscribe']");
+		clickToElementByJS("//button[@title='Subscribe']");
+		sleepInSecond(5);
+		
+		// Step 11: Verify text có hiển thị (Sử dụng JE - Get inner text)
+		// Thank you for your subscription
+		Assert.assertTrue(getInnerText().contains("Thank you for your subscription."));
+		
+		// Step 12: Navigate tới domain https://demo.guru.com/v4/ (Sử dụng JE)
+		// Verify domain sau khi navigate = demo.guru99.com
+		navigateToUrlByJS("https://demo.guru99.com/v4/");
+		sleepInSecond(5);
+		
+		Assert.assertEquals(getDomainName(), "demo.guru99.com");
 	}
 
 	@Test
@@ -46,8 +110,19 @@ public class Topic_19_Javascript_Executor {
 	public void TC_03_() {
 		
 	}
+	public int getRandomNumber() {
+		return new Random().nextInt(9999);
+	}
+	
+	public String getTitlePage() {
+		return (String) jsExecutor.executeScript("return document.getElementsByTagName('title')[0].innerHTML;"); 
+	}
 	public Object executeForBrowser(String javaScript) {
 		return jsExecutor.executeScript(javaScript);
+	}
+	
+	public String getDomainName() {
+		return (String) jsExecutor.executeScript("return document.domain;");
 	}
 
 	public String getInnerText() {
