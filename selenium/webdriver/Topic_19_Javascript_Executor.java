@@ -8,6 +8,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.server.handler.ClickElement;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -33,7 +34,7 @@ public class Topic_19_Javascript_Executor {
 		
 	}
 
-	//@Test
+	@Test
 	public void TC_01_Tech_Panda() {
 		// Step 01: Truy cập vào trang
 		navigateToUrlByJS("http://live.techpanda.org/");
@@ -106,37 +107,70 @@ public class Topic_19_Javascript_Executor {
 		// Khai báo biến
 		String firstName = "//input[@id='firstname']";
 		String surName = "//input[@id='surname']";
-		String emailAddress = "//input[@id='email']";
-		String password = "//input[@id='password']";
+		String emailAddress = "//label[@for='surname']/parent::div/following-sibling::div/div/input[@id='email']";
+		String password = "//label[@for='surname']/parent::div/following-sibling::div/div/input[@id='password']";
 		String confirmPassword = "//input[@id='password-confirm']";
+		String buttonRegister = "//button[contains(text(),'Register')]";
 		
 		// Step 01: Access vào trang [https://warranty.rode.com/]
 		navigateToUrlByJS("https://warranty.rode.com/");
 		sleepInSecond(3);
 		
 		// Step 02: Click Register và verify message hiển thị tại field First Name textbox
-		clickToElementByJS("//button[contains(text(),'Register')]");
+		clickToElementByJS(buttonRegister);
 		sleepInSecond(2);
 		
 		Assert.assertEquals(getElementValidationMessage(firstName), "Please fill out this field.");
+		
 		// Step 03: Input dữ liệu vào file First Name và click Register - Verify messag tại filed Surname textbox
+		sendkeyToElementByJS(firstName, "Phuc");
+		
+		clickToElementByJS(buttonRegister);
+		sleepInSecond(2);
+		
+		Assert.assertEquals(getElementValidationMessage(surName), "Please fill out this field.");
 		
 		// Step 04: Input dữ liệu vào file Surname và click Register - Verify messag tại filed E-Mail Address textbox
+		sendkeyToElementByJS(surName, "DV");
+		
+		clickToElementByJS(buttonRegister);
+		sleepInSecond(2);
+		
+		Assert.assertEquals(getElementValidationMessage(emailAddress), "Please fill out this field.");
 		
 		// Step 05: Input sai dữ liệu vào file E-Mail Address và click Register - Verify messag tại filed E-Mail Address textbox
+		sendkeyToElementByJS(emailAddress, "phucdv");
+		
+		clickToElementByJS(buttonRegister);
+		sleepInSecond(2);
+		
+		Assert.assertEquals(getElementValidationMessage(emailAddress), "Please enter an email address.");
 		
 		// Step 06: Input dữ liệu vào file E-Mail Address và click Register - Verify messag tại filed Password textbox
+		sendkeyToElementByJS(emailAddress, "phucdv@gmail.com");
+		
+		clickToElementByJS(buttonRegister);
+		sleepInSecond(2);
+		
+		Assert.assertEquals(getElementValidationMessage(password), "Please fill out this field.");
 		
 		// Step 07: Input dữ liệu vào file Password và click Register - Verify messag tại filed Confirm Password textbox
+		sendkeyToElementByJS(password, "12345678");
+		
+		clickToElementByJS(buttonRegister);
+		sleepInSecond(2);
+		
+		Assert.assertEquals(getElementValidationMessage(confirmPassword), "Please fill out this field.");
 		
 		// Step 08: Input dữ liệu vào file Confirm Password không matching với Password và click Register - Verify messag tại filed Password textbox
+		sendkeyToElementByJS(confirmPassword, "123456789");
 		
+		clickToElementByJS(buttonRegister);
+		sleepInSecond(2);
+		
+		Assert.assertEquals(driver.findElement(By.xpath("//input[@autocomplete='new-password']/following-sibling::span/strong")).getText(), "The password confirmation does not match.");
 	}
 
-	@Test
-	public void TC_03_() {
-		
-	}
 	public int getRandomNumber() {
 		return new Random().nextInt(9999);
 	}
