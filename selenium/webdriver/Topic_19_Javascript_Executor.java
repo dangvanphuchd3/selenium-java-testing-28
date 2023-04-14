@@ -33,7 +33,7 @@ public class Topic_19_Javascript_Executor {
 		
 	}
 
-	@Test
+	//@Test
 	public void TC_01_Tech_Panda() {
 		// Step 01: Truy cập vào trang
 		navigateToUrlByJS("http://live.techpanda.org/");
@@ -102,7 +102,34 @@ public class Topic_19_Javascript_Executor {
 	}
 
 	@Test
-	public void TC_02_() {
+	public void TC_02_HTML5_Vlidation_Message() {
+		// Khai báo biến
+		String firstName = "//input[@id='firstname']";
+		String surName = "//input[@id='surname']";
+		String emailAddress = "//input[@id='email']";
+		String password = "//input[@id='password']";
+		String confirmPassword = "//input[@id='password-confirm']";
+		
+		// Step 01: Access vào trang [https://warranty.rode.com/]
+		navigateToUrlByJS("https://warranty.rode.com/");
+		sleepInSecond(3);
+		
+		// Step 02: Click Register và verify message hiển thị tại field First Name textbox
+		clickToElementByJS("//button[contains(text(),'Register')]");
+		sleepInSecond(2);
+		
+		Assert.assertEquals(getElementValidationMessage(firstName), "Please fill out this field.");
+		// Step 03: Input dữ liệu vào file First Name và click Register - Verify messag tại filed Surname textbox
+		
+		// Step 04: Input dữ liệu vào file Surname và click Register - Verify messag tại filed E-Mail Address textbox
+		
+		// Step 05: Input sai dữ liệu vào file E-Mail Address và click Register - Verify messag tại filed E-Mail Address textbox
+		
+		// Step 06: Input dữ liệu vào file E-Mail Address và click Register - Verify messag tại filed Password textbox
+		
+		// Step 07: Input dữ liệu vào file Password và click Register - Verify messag tại filed Confirm Password textbox
+		
+		// Step 08: Input dữ liệu vào file Confirm Password không matching với Password và click Register - Verify messag tại filed Password textbox
 		
 	}
 
