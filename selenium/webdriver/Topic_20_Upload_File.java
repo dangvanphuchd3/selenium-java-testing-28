@@ -29,7 +29,7 @@ public class Topic_20_Upload_File {
 	}
 
 	@Test
-	public void TC_01_() {
+	public void TC_01_Test() {
 		
 	}
 
