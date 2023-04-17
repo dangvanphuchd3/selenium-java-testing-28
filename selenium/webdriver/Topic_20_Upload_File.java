@@ -14,6 +14,14 @@ public class Topic_20_Upload_File {
 	WebDriver driver;
 	String projectPath = System.getProperty("user.dir");
 	String osName = System.getProperty("os.name");
+	
+	String beachFileName = "beach.jpg";
+	String computerFileName = "computer.jpg";
+	String mountainFileName = "mountain.jpg";
+	
+	String beachFilePath = projectPath + "\\uploadFiles\\" + beachFileName;
+	String computerFilePath = projectPath + "\\uploadFiles\\" + computerFileName;
+	String mountainFilePath = projectPath + "\\uploadFiles\\" + mountainFileName;
 
 	@BeforeClass
 	public void beforeClass() {
@@ -29,8 +37,10 @@ public class Topic_20_Upload_File {
 	}
 
 	@Test
-	public void TC_01_Test() {
+	public void TC_01_One_File_Per_Time() {
+		driver.get("https://blueimp.github.io/jQuery-File-Upload/");
 		
+		driver.findElement(By.cssSelector("input[type='file']")).sendKeys("D:\\TestIO\\computer.jpg");
 	}
 
 	@Test
