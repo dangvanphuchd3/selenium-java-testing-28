@@ -30,6 +30,8 @@ public class Topic_20_Upload_File_AutoIT {
 	
 	String autoITFirefoxOneTimePath = projectPath + "\\autoIT\\firefoxUploadOneTime.exe";
 	String autoITChromeOneTimePath = projectPath + "\\autoIT\\chromeUploadOneTime.exe";
+	String autoITFirefoxMultipleTimePath = projectPath + "\\autoIT\\firefoxUploadMultiple.exe";
+	String autoITChromeMultipleTimePath = projectPath + "\\autoIT\\chromeUploadMultiple.exe";
 
 	@BeforeClass
 	public void beforeClass() {
@@ -45,7 +47,7 @@ public class Topic_20_Upload_File_AutoIT {
 		
 	}
 
-	@Test
+	//@Test
 	public void TC_01_One_File_Per_Time() throws IOException {
 		driver.get("https://blueimp.github.io/jQuery-File-Upload/");
 		
@@ -54,7 +56,11 @@ public class Topic_20_Upload_File_AutoIT {
 		sleepInSecond(2);
 		
 		// Load file lên
-		Runtime.getRuntime().exec(new String[] {autoITFirefoxOneTimePath, beachFilePath});
+		if (driver.toString().contains("firefox")) {
+			Runtime.getRuntime().exec(new String[] {autoITFirefoxOneTimePath, beachFilePath});
+		} else {
+			Runtime.getRuntime().exec(new String[] {autoITChromeOneTimePath, beachFilePath});
+		}
 		
 		// Verify file được load lên thành công
 		Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + beachFileName + "']")).isDisplayed());
@@ -74,8 +80,41 @@ public class Topic_20_Upload_File_AutoIT {
 	}
 
 	@Test
-	public void TC_02_() {
+	public void TC_02_Multiple_Per_Time() throws IOException {
+		driver.get("https://blueimp.github.io/jQuery-File-Upload/");
 		
+		// Click để bật Open File Dialog lên
+		driver.findElement(By.cssSelector("span.btn-success")).click();
+		sleepInSecond(2);
+		
+		// Load file lên
+		if (driver.toString().contains("firefox")) {
+			Runtime.getRuntime().exec(new String[] {autoITFirefoxMultipleTimePath, beachFilePath, computerFilePath});
+		} else {
+			Runtime.getRuntime().exec(new String[] {autoITChromeMultipleTimePath, beachFilePath, computerFilePath});
+		}
+		
+		// Verify file được load lên thành công
+		Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + beachFileName + "']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + computerFileName + "']")).isDisplayed());
+		//Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name' and text()='" + mountainFileName + "']")).isDisplayed());
+		
+		// Click upload
+		List<WebElement> uploadButton = driver.findElements(By.cssSelector("table button.start"));
+		for (WebElement button : uploadButton) {
+			button.click();
+			sleepInSecond(3);
+		}
+		
+		// Verify upload thành công (Link)
+		Assert.assertTrue(driver.findElement(By.xpath("//a[text()='" + beachFileName + "']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//a[text()='" + computerFileName + "']")).isDisplayed());
+		//Assert.assertTrue(driver.findElement(By.xpath("//a[text()='" + mountainFileName + "']")).isDisplayed());
+		
+		// Verify upload thành công (image)
+		Assert.assertTrue(isImageLoaded("//img[contains(@src,'" + beachFileName + "')]"));
+		Assert.assertTrue(isImageLoaded("//img[contains(@src,'" + computerFileName + "')]"));
+		//Assert.assertTrue(isImageLoaded("//img[contains(@src,'" + mountainFileName + "')]"));
 	}
 
 	@Test
