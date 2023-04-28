@@ -73,7 +73,8 @@ public class Topic_21_FindElement_FindElements {
 		// Nếu hết thời gian 15s mà vẫn không tìm thấy element thì 
 		// + Không đánh fail testcase + vẫn chạy step tiếp theo
 		// + Trả về 1 list rỗng (empty) = 0
-		
+		elements = driver.findElements(By.cssSelector("input[type='check']"));
+		System.out.println("List element number = " + elements.size());
 	}
 
 	@Test
