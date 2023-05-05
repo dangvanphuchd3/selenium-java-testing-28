@@ -29,18 +29,48 @@ public class Topic_21_StaticWait {
 	}
 
 	@Test
-	public void TC_01_() {
+	public void TC_01_Not_Enough_Time() {
+		driver.get("https://automationfc.github.io/dynamic-loading/");
+
+		// Click button
+		driver.findElement(By.cssSelector("div#start>button")).click();
 		
+		// Loading icon mất 5s mới biến mất
+		// Thiếu thời gian để cho 1 element tiếp theo hoạt động được
+		sleepInSecond(3);
+		
+		// Verify text
+		Assert.assertEquals(driver.findElement(By.cssSelector("div#finish>h4")).getText(), "Hello World!");
 	}
 
 	@Test
-	public void TC_02_() {
+	public void TC_02_Enough_Time() {
+		driver.get("https://automationfc.github.io/dynamic-loading/");
 		
+		// Click button
+		driver.findElement(By.cssSelector("div#start>button")).click();
+		
+		// Loading icon mất 5s mới biến mất
+		// Đủ thời gian để cho 1 element tiếp theo hoạt động được
+		sleepInSecond(5);
+		
+		// Verify text
+		Assert.assertEquals(driver.findElement(By.cssSelector("div#finish>h4")).getText(), "Hello World!");
 	}
 
 	@Test
-	public void TC_03_() {
+	public void TC_03_More_Time() {	
+		driver.get("https://automationfc.github.io/dynamic-loading/");
+
+		// Click button
+		driver.findElement(By.cssSelector("div#start>button")).click();
 		
+		// Loading icon mất 5s mới biến mất
+		// Thừa thời gian để cho 1 element tiếp theo hoạt động được
+		sleepInSecond(10);
+		
+		// Verify text
+		Assert.assertEquals(driver.findElement(By.cssSelector("div#finish>h4")).getText(), "Hello World!");
 	}
 	
 	public void sleepInSecond(long timeInSecond) {
