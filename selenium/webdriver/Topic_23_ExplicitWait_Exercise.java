@@ -57,7 +57,7 @@ public class Topic_23_ExplicitWait_Exercise {
 	}
 
 	@Test
-	public void TC_02_() {
+	public void TC_02_Upload_File() {
 		
 	}
 

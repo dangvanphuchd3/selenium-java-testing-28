@@ -65,7 +65,7 @@ public class Topic_22_ExplicitWait {
 	}
 
 	@Test
-	public void TC_More_Time() {
+	public void TC_03_More_Time() {
 		driver.get("https://automationfc.github.io/dynamic-loading/");
 		
 		explicitWait = new WebDriverWait(driver, 50);
@@ -79,7 +79,22 @@ public class Topic_22_ExplicitWait {
 		// Verify text
 		Assert.assertEquals(driver.findElement(By.cssSelector("div#finish>h4")).getText(), "Hello World!");
 	}
+	
+	@Test
+	public void TC_04_Invisible() {
+		driver.get("https://automationfc.github.io/dynamic-loading/");
+		
+		explicitWait = new WebDriverWait(driver, 5);
 
+		// Click button
+		driver.findElement(By.cssSelector("div#start>button")).click();
+		
+		// Thiếu thời gian để cho 1 element tiếp theo haotj động được
+		explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div#loading")));
+		
+		// Verify text
+		Assert.assertEquals(driver.findElement(By.cssSelector("div#finish>h4")).getText(), "Hello World!");
+	}
 	
 	public void sleepInSecond(long timeInSecond) {
 		try {
