@@ -40,8 +40,19 @@ public class Topic_23_ExplicitWait_Exercise {
 		explicitWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.RadCalendar")));
 		
 		// Wait cho ngày 19 được phép click
-		explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text='19']")));
+		explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='19']")));
 		
+		// Click vào ngày 19
+		driver.findElement(By.xpath("//a[text()='19']")).click();
+		
+		// Wait cho Ajax icon loading biến mất (invisible)
+		explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div[id*='RadCalendar1']>div.raDiv")));
+		
+		// Wail cho ngày vừa được click là được phép click trở lại
+		explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//td[@class='rcSelected']/a[text()='19']")));
+		
+		// Verify cho Selected Dates là "Friday, May 19, 2023"
+		Assert.assertEquals(driver.findElement(By.cssSelector("span#ctl00_ContentPlaceholder1_Label1")).getText(), "Friday, May 19, 2023");
 		
 	}
 
