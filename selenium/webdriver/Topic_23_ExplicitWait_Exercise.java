@@ -17,6 +17,14 @@ public class Topic_23_ExplicitWait_Exercise {
 	String projectPath = System.getProperty("user.dir");
 	String osName = System.getProperty("os.name");
 	WebDriverWait explicitWait;
+	
+	String beachFileName = "beach.jpg";
+	String computerFileName = "computer.jpg";
+	String mountainFileName = "mountain.jpg";
+	
+	String beachFilePath = projectPath + "\\uploadFiles\\" + beachFileName;
+	String computerFilePath = projectPath + "\\uploadFiles\\" + computerFileName;
+	String mountainFilePath = projectPath + "\\uploadFiles\\" + mountainFileName;
 
 	@BeforeClass
 	public void beforeClass() {
@@ -30,7 +38,7 @@ public class Topic_23_ExplicitWait_Exercise {
 		
 	}
 
-	@Test
+	//@Test
 	public void TC_01_Ajax_Loading() {
 		driver.get("https://demos.telerik.com/aspnet-ajax/ajaxloadingpanel/functionality/explicit-show-hide/defaultcs.aspx");
 		
@@ -58,6 +66,35 @@ public class Topic_23_ExplicitWait_Exercise {
 
 	@Test
 	public void TC_02_Upload_File() {
+		driver.get("https://gofile.io/uploadFiles");
+		
+		explicitWait = new WebDriverWait(driver, 120);
+		
+		// Wait cho Add Files button được visible
+		explicitWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div#filesUpload button.filesUploadButton")));
+		
+		// Upload file
+		driver.findElement(By.cssSelector("input[type='file']")).sendKeys(beachFilePath + "\n" + computerFilePath);
+		
+		// Wait cho các loading icon của từng file biến mất
+		explicitWait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("div.progress-bar"))));
+		
+		// Wait cho Upload message thành công được visible
+		explicitWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='col-auto text-center']/div[text()='Your files have been successfully uploaded']")));
+		
+		// Verify message này displayed
+		Assert.assertTrue(driver.findElement(By.xpath("//div[@class='col-auto text-center']/div[text()='Your files have been successfully uploaded']")).isDisplayed());
+		
+		// Wait + click link download được visible
+		explicitWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.mainUploadSuccessLink a.ajaxLink"))).click();
+		
+		// Click vào button Showfile
+		// driver.findElement(By.cssSelector("div.mainUploadSuccessLink a.ajaxLink")).click();
+		
+		// Wait cho file name vs button download/ play hiển thị
+		explicitWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("span.contentName")));
+		explicitWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//span[@class='contentName']/parent::a/parent::div/following-sibling::div//span[text()='Download']")));
+		explicitWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//span[@class='contentName']/parent::a/parent::div/following-sibling::div//span[text()='Play']")));
 		
 	}
 
