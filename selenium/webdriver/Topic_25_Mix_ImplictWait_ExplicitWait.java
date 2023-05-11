@@ -53,18 +53,18 @@ public class Topic_25_Mix_ImplictWait_ExplicitWait {
 		System.out.println("Thời gian kết thúc của implicit: " + getTimeStamp());	
 	}
 
-	@Test
+	//@Test
 	public void TC_02_Element_Not_Found_Implicit() {
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		
 		driver.get("https://www.facebook.com/");
 		
 		// Implicit
-		System.out.println("Thời gian bắt đầu của explicit: " + getTimeStamp());
+		System.out.println("Thời gian bắt đầu của implicit: " + getTimeStamp());
 		try {
 			driver.findElement(By.cssSelector("input#selenium"));
 		} catch (Exception e) {
-			System.out.println("Thời gian kết thúc của explicit: " + getTimeStamp());
+			System.out.println("Thời gian kết thúc của implicit: " + getTimeStamp());
 		}
 		
 		// Output 
@@ -75,13 +75,46 @@ public class Topic_25_Mix_ImplictWait_ExplicitWait {
 
 	@Test
 	public void TC_03_Element_Not_Found_Implicit_Explicit() {
+		// 3.1 - Implicit = Explicit
+		// 3.2 - Implicit < Explicit
+		// 3.3 - Implicit > Explicit
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		explicitWait = new WebDriverWait(driver, 5);
 		
 		driver.get("https://www.facebook.com/");
 		
 		// Implicit
+		System.out.println("Thời gian bắt đầu của implicit: " + getTimeStamp());
+		try {
+			driver.findElement(By.cssSelector("input#selenium"));
+		} catch (Exception e) {
+			System.out.println("Thời gian kết thúc của implicit: " + getTimeStamp());
+		}
 		
+		// Explicit
+		System.out.println("Thời gian bắt đầu của explicit: " + getTimeStamp());
+		try {
+			explicitWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input#selenium")));
+		} catch (Exception e) {
+			System.out.println("Thời gian kết thúc của explicit: " + getTimeStamp());
+		}
+	}
+	
+	@Test
+	public void TC_04_Element_Not_Explicit_By() {
+		explicitWait = new WebDriverWait(driver, 5);
+		
+		driver.get("https://www.facebook.com/");
+		
+		// Explicit - By là tham số nhận vào của hàm Explicit - visibilityOfElementLocated (By)
+		// Implicit = 0
+		// Tổng time = explicit
+		System.out.println("Thời gian bắt đầu của explicit: " + getTimeStamp());
+		try {
+			explicitWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input#selenium")));
+		} catch (Exception e) {
+			System.out.println("Thời gian kết thúc của explicit: " + getTimeStamp());
+		}
 	}
 	
 	public void sleepInSecond(long timeInSecond) {
