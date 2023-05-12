@@ -73,7 +73,7 @@ public class Topic_25_Mix_ImplictWait_ExplicitWait {
 		// Throw ra 1 exception: NoSuchElement
 	}
 
-	@Test
+	//@Test
 	public void TC_03_Element_Not_Found_Implicit_Explicit() {
 		// 3.1 - Implicit = Explicit
 		// 3.2 - Implicit < Explicit
@@ -100,7 +100,7 @@ public class Topic_25_Mix_ImplictWait_ExplicitWait {
 		}
 	}
 	
-	@Test
+	//@Test
 	public void TC_04_Element_Not_Explicit_By() {
 		explicitWait = new WebDriverWait(driver, 5);
 		
@@ -112,6 +112,20 @@ public class Topic_25_Mix_ImplictWait_ExplicitWait {
 		System.out.println("Thời gian bắt đầu của explicit: " + getTimeStamp());
 		try {
 			explicitWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input#selenium")));
+		} catch (Exception e) {
+			System.out.println("Thời gian kết thúc của explicit: " + getTimeStamp());
+		}
+	}
+	
+	@Test
+	public void TC_05_Element_Not_Explicit_WebElement() {
+		explicitWait = new WebDriverWait(driver, 5);
+		
+		driver.get("https://www.facebook.com/");
+		
+		System.out.println("Thời gian bắt đầu của explicit: " + getTimeStamp());
+		try {
+			explicitWait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector("input#selenium"))));
 		} catch (Exception e) {
 			System.out.println("Thời gian kết thúc của explicit: " + getTimeStamp());
 		}
