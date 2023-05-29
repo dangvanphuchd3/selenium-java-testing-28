@@ -22,6 +22,7 @@ public class Topic_26_FluentWait {
 	String projectPath = System.getProperty("user.dir");
 	String osName = System.getProperty("os.name");
 	FluentWait<WebDriver> fluentDriver;
+	FluentWait<WebElement> fluentElement;
 	
 	long allTime = 15; // Second
 	long pollingTime = 100; // Milisecond
@@ -49,15 +50,27 @@ public class Topic_26_FluentWait {
 	}
 
 	@Test
-	public void TC_02_() {
+	public void TC_02_Fluent() {
+		driver.get("https://automationfc.github.io/fluent-wait/");
 		
+		WebElement countdoutTime = findElement("//div[@id='javascript_countdown_time']");
+		
+		fluentElement = new FluentWait<WebElement>(countdoutTime);
+		
+		fluentElement.withTimeout(Duration.ofSeconds(allTime))
+		.pollingEvery(Duration.ofMillis(pollingTime))
+		.ignoring(org.openqa.selenium.NoSuchElementException.class);
+		
+		fluentElement.until(new Function<WebElement, Boolean>() {
+			@Override
+			public Boolean apply(WebElement element) {
+				String text = element.getText();
+				System.out.println(text);
+				return text.endsWith("00");
+			}
+		});
 	}
 
-	@Test
-	public void TC_03_() {
-		
-	}
-	
 	public WebElement findElement(String xpathLocator) {
 		fluentDriver = new FluentWait<WebDriver>(driver);
 	
