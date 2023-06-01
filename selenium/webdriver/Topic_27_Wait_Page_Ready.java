@@ -1,11 +1,14 @@
 package webdriver;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -19,6 +22,7 @@ public class Topic_27_Wait_Page_Ready {
 	String projectPath = System.getProperty("user.dir");
 	String osName = System.getProperty("os.name");
 	WebDriverWait explicitWait;
+	Actions action;
 
 	@BeforeClass
 	public void beforeClass() {
@@ -29,7 +33,7 @@ public class Topic_27_Wait_Page_Ready {
 		}
 		
 		driver = new FirefoxDriver();
-		
+		action = new Actions(driver);
 		explicitWait = new WebDriverWait(driver, 30);
 	}
 
@@ -44,7 +48,7 @@ public class Topic_27_Wait_Page_Ready {
 		Assert.assertEquals(driver.findElement(By.cssSelector("div#project h1")).getText(), "OrangeHRM REST API Documentation");
 	}
 
-	@Test
+	//@Test
 	public void TC_02_Admin_NopCommerce() {
 		driver.get("https://admin-demo.nopcommerce.com");
 		
@@ -80,8 +84,27 @@ public class Topic_27_Wait_Page_Ready {
 	}
 
 	@Test
-	public void TC_03_() {
+	public void TC_03_Blog_Test_Project() {
+		driver.get("https://blog.testproject.io/");
 		
+		String keyWord = "Selenium";
+		
+		action.moveToElement(driver.findElement(By.cssSelector("section#search-2 input.search-field"))).perform();
+		
+		Assert.assertTrue(isPageLoadedSuccess());
+		
+		driver.findElement(By.cssSelector("section#search-2 input.search-field")).sendKeys(keyWord);
+		driver.findElement(By.cssSelector("section#search-2 span.glass")).click();
+		
+		explicitWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[@class='main-heading' and text()='Search Results']")));
+		
+		Assert.assertTrue(isPageLoadedSuccess());
+		
+		List<WebElement> postTitle = driver.findElements(By.cssSelector("div.post-content>h3>a"));
+		for (WebElement title : postTitle) {
+			System.out.println(title.getText());
+			Assert.assertTrue(title.getText().contains(keyWord));
+		}
 	}
 	
 	public boolean isPageLoadedSuccess() {
