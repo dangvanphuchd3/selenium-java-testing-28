@@ -11,7 +11,12 @@
       <class name="tiki.admin.Shopper_01_Manage_Product"/>   
       <class name="tiki.admin.Shopper_02_Manage_Cart"/> 
       <class name="tiki.user.User_01_Checkout"/> 
-      <class name="tiki.user.User_02_Order"/>   
+      <class name="tiki.user.User_02_Order"/> 
+      <groups>
+      		<run>
+      			<include name = "admin"></include>
+      		</run>
+      </groups>  
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
